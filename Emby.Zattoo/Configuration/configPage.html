@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Zattoo</title>
+</head>
+<body>
+	<div id="zattooConfigurationPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-checkbox,emby-button">
+		<div data-role="content">
+			<div class="content-primary">
+
+				<h1>Zattoo</h1>
+				<form id="zattooConfigurationForm">
+
+					<div class="inputContainer">
+						<input is="emby-input" id="txtZattooUsername" name="zattooUsername" label="Username:" type="text" required />
+						<div class="fieldDescription">
+							<a target="_blank" href="https://zattoo.com/signup">Register!</a>
+						</div>
+					</div>
+
+					<div class="inputContainer">
+						<input is="emby-input" id="txtZattooPassword" name="zattooPassword" label="Password:" type="password" required/>
+					</div>
+
+					<h2>Advanced Settings:</h2>
+
+					<div class="inputContainer">
+						<input is="emby-input" id="txtZapiUrl" name="zapiUrl" label="API URL:" type="text" required />
+					</div>
+
+					<div class="inputContainer">
+						<input is="emby-input" id="txtZapiAuthUrl" name="zapiAuthUrl" label="API Authentication URL:" type="text" required />
+					</div>
+
+					<div>
+						<button is="emby-button" type="submit" class="raised button-submit block"><span>Save</span></button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			var ZattootConfigurationPageVar = {
+				pluginUniqueId: "812FB1A0-3A6D-4E43-810D-4E58FEC10ECD"
+			};
+
+			$('#zattooConfigurationPage').on('pageshow', function () {
+				Dashboard.showLoadingMsg();
+				var page = this;
+
+				ApiClient.getPluginConfiguration(ZattootConfigurationPageVar.pluginUniqueId).then(function(config) {
+					$('#txtZattooUsername', page).val(config.Username);
+					$('#txtZattooPassword', page).val(config.Password);
+					$('#txtZapiUrl', page).val(config.ZapiUrl);
+					$('#txtZapiAuthUrl', page).val(config.ZapiAuthUrl);
+					Dashboard.hideLoadingMsg();
+				});
+			});
+
+			$('#zattooConfigurationForm').on('submit', function () {
+				Dashboard.showLoadingMsg();
+				var form = this;
+				ApiClient.getPluginConfiguration(ZattootConfigurationPageVar.pluginUniqueId).then(function(config) {
+					config.Username = $('#txtZattooUsername', form).val();
+					config.Password = $('#txtZattooPassword', form).val();
+					config.ZapiUrl = $('#txtZapiUrl', form).val();
+					config.ZapiAuthUrl = $('#txtZapiAuthUrl', form).val();
+					ApiClient.updatePluginConfiguration(ZattootConfigurationPageVar.pluginUniqueId, config).then(Dashboard.processPluginConfigurationUpdateResult);
+				});
+				// Disable default form submission
+				return false;
+			});
+		
+		</script>
+	</div>
+</body>
+</html>
