@@ -15,7 +15,7 @@ namespace Emby.Zattoo
 	{
 		public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer) : base(applicationPaths, xmlSerializer)
 		{
-
+			Instance = this;
 		}
 
 		public override string Name { get; } = "Zattoo";
@@ -23,12 +23,18 @@ namespace Emby.Zattoo
 
 		public IEnumerable<PluginPageInfo> GetPages()
 		{
-			 return new[] {
-                new PluginPageInfo {
-                    Name = Name,
-                    EmbeddedResourcePath = GetType().Namespace + ".Configuration.configPage.html"
-                }
-            };
+			return new[] {
+				new PluginPageInfo {
+					Name = Name,
+					EmbeddedResourcePath = GetType().Namespace + ".Configuration.configPage.html"
+				}
+			};
 		}
+
+		/// <summary>
+		/// Gets the instance.
+		/// </summary>
+		/// <value>The instance.</value>
+		public static Plugin Instance { get; private set; }
 	}
 }
