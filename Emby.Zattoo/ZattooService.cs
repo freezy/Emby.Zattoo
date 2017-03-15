@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MediaBrowser.Common.Net;
 using MediaBrowser.Controller.Drawing;
 using MediaBrowser.Controller.LiveTv;
 using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Logging;
+using MediaBrowser.Model.Serialization;
 
 namespace Emby.Zattoo
 {
@@ -20,16 +20,21 @@ namespace Emby.Zattoo
 		public event EventHandler<RecordingStatusChangedEventArgs> RecordingStatusChanged;
 
 		private readonly ILogger _logger;
+		private readonly IHttpClient _httpClient;
+		private readonly IJsonSerializer _jsonSerializer;
 
-		public ZattooService(ILogger logger)
+		public ZattooService(ILogger logger, IHttpClient httpClient, IJsonSerializer jsonSerializer)
 		{
 			_logger = logger;
+			_httpClient = httpClient;
+			_jsonSerializer = jsonSerializer;
 			_logger.Info("[Zattoo] ZattooService()");
 		}
 
 		public Task<LiveTvServiceStatusInfo> GetStatusInfoAsync(CancellationToken cancellationToken)
 		{
-			_logger.Info("[Zattoo] ZattooService()");
+			_logger.Info("[Zattoo] Logging in...");
+
 			return null;
 		}
 
